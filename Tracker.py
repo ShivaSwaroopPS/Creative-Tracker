@@ -2,14 +2,44 @@ import streamlit as st
 import datetime
 import csv
 import os
+from pathlib import Path
 
 # ====== CONFIG ======
 TRACKER_FILE = "daily_tracker_log.csv"
 CHECKLIST_FILE = "custom_checklist.txt"
 WORK_LOG_FILE = "daily_work_log.csv"
+VIDEO_FILE = "background.mp4"
 TODAY = datetime.date.today().isoformat()
 
 st.set_page_config(page_title="Creative Builder Daily Tracker", layout="centered")
+
+# ====== BACKGROUND VIDEO ======
+video_path = Path(VIDEO_FILE).resolve()
+video_url = video_path.as_uri()
+
+st.markdown(f"""
+<style>
+video.bg-video {{
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.8;
+}}
+body {{
+    margin: 0;
+    padding: 0;
+}}
+</style>
+
+<video class="bg-video" autoplay loop controls>
+    <source src="{video_url}" type="video/mp4">
+</video>
+""", unsafe_allow_html=True)
+
 st.title("🚀 Creative Builder Daily Satisfaction Tracker")
 
 # ====== LOAD OR INITIALIZE CHECKLIST ======
@@ -107,7 +137,7 @@ if os.path.exists(WORK_LOG_FILE):
             st.text("".join(lines[-10:]))  # show last 10 work logs
 else:
     st.info("No past work logs found yet.")
-    
+
     
     
 #streamlit run "C:\Users\SHIVA.SWAROOP.P.S\OneDrive - S&P Global\Attachments\My Projects\Tracker.py"
